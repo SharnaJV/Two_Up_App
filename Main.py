@@ -1,3 +1,4 @@
 from GUI import *
 
-Loginform()
+login_form()
+game_screen()
