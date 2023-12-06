@@ -1,4 +1,4 @@
 from GUI import *
 
-login_form()
-game_screen()
+if __name__=="__main__":
+    login_form()

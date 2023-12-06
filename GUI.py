@@ -1,48 +1,11 @@
 from tkinter import *
-import mysql.connector
+from Authentication import *
 
-def db_connect():
-    db_config = {
-        "host": "127.0.0.1",
-        "user": "root@localhost",
-        "password" : "",
-        "database" : "Two Up App"
-    }
-    try:
-        connection = mysql.connector.connect(**db_config)
-        print("Connected to the database")
-        return connection
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return None
+def login_validation():
+    uname_input = username.get()
+    pass_input = password.get()
+    login(uname_input, pass_input)
     
-#Defining login function
-def login():
-    uname=username.get()
-    pwd=password.get()
-
-    if uname=='' or pwd=='':
-        message.set("Username and/or password has not been entered!")
-    else:
-        connection = db_connect()
-        if connection:
-            cursor = connection.cursor()
-            query = "SELECT * FROM users WHERE username = %s AND password = %s"
-            cursor.execute(query,(uname, pwd))
-            user = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            if user:
-                message.set("Login Success")
-                game_screen()
-            else:
-                message.set("Wrong username and/or password!")
-        # if uname=="guest" and pwd=="guest":
-        #     message.set("Login success")
-        #     game_screen()
-        else:
-            message.set("Failed to connect to database")
-
 #Creating the user authentication screen
 def login_form():
     global login_screen
