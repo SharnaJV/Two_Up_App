@@ -1,48 +1,16 @@
 from tkinter import *
+from Authentication import login, reg_user
 import mysql.connector
 
-def db_connect():
-    db_config = {
-        "host": "127.0.0.1",
-        "user": "root@localhost",
-        "password" : "Power2thePeopleWho8",
-        "database" : "Two Up App"
-    }
-    try:
-        connection = mysql.connector.connect(**db_config)
-        print("Connected to the database")
-        return connection
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return None
-    
 #Defining login function
-def login():
-    uname=username.get()
-    pwd=password.get()
+def login_auth():
+    uname_input=username.get()
+    pwd_input=password.get()
 
-    if uname=='' or pwd=='':
-        message.set("Username and/or password has not been entered!")
-    else:
-        connection = db_connect()
-        if connection:
-            cursor = connection.cursor()
-            query = "SELECT * FROM users WHERE username = %s AND password = %s"
-            cursor.execute(query,(uname, pwd))
-            user = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            if user:
-                message.set("Login Success")
-                game_screen()
-            else:
-                message.set("Wrong username and/or password!")
-        # if uname=="guest" and pwd=="guest":
-        #     message.set("Login success")
-        #     game_screen()
-        else:
-            message.set("Failed to connect to database")
-
+    if login(uname_input,pwd_input):
+        print("Proceed to game_screen or other actions after successful login")
+        game_screen()
+        
 #Creating the user authentication screen
 def login_form():
     global login_screen
@@ -75,13 +43,62 @@ def login_form():
     
 #Login Button
     Button(login_screen, text="Login", width=10, height=1,
-    bg="#B7521E", fg="#EFE0B9", command=login).place(x=320,y=200)
+    bg="#B7521E", fg="#EFE0B9", command=login_auth).place(x=320,y=200)
 
 #Register Button
     Button(login_screen, text="Register", width=10, height=1,
-    bg="#B7521E", fg="#EFE0B9", command=login).place(x=415,y=200)
+    bg="#B7521E", fg="#EFE0B9", command=reg_form).place(x=415,y=200)
 
     login_screen.mainloop()
+    
+def registration():
+    global registration_screen
+    registration_screen = Tk()
+    registration_screen.title("Register")
+    registration_screen.geometry("400x300")
+    registration_screen.configure(bg="#EFE0B9")
+    
+    global email
+    global first_name
+    global last_name 
+    global employee_id
+    email = StringVar()
+    first_name = StringVar()
+    last_name = StringVar()
+    employee_id = StringVar()
+
+    Label(registration_screen, text="Please enter details below to register", bg="#EFE0B9").pack()
+    Label(registration_screen, text="").pack()
+
+    Label(registration_screen, text="Username * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=username, bg="#E4B04A").pack()
+
+    Label(registration_screen, text="Password * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=password, show="*", bg="#E4B04A").pack()
+
+    Label(registration_screen, text="Email * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=email, bg="#E4B04A").pack()
+
+    Label(registration_screen, text="First Name * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=first_name, bg="#E4B04A").pack()
+
+    Label(registration_screen, text="Last Name * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=last_name, bg="#E4B04A").pack()
+
+    Label(registration_screen, text="Employee ID * ", bg="#EFE0B9").pack()
+    Entry(registration_screen, textvariable=employee_id, bg="#E4B04A").pack()
+
+    Button(registration_screen, text="Register", width=10, height=1, bg="#B7521E", fg="#EFE0B9", command=reg_user).pack()
+
+    registration_screen.mainloop()
+    
+def reg_form():
+    global register_screen
+    register_screen = Tk()
+    register_screen.title("Register Form")
+    register_screen.geometry("300x200")
+    Label(register_screen, text="Click Register to proceed", bg="#EFE0B9").pack()
+    Button(register_screen, text="Register", width=10, height=1, bg="#B7521E", fg="#EFE0B9", command=registration).pack()
     
 def font_options(option_pick):
     print(f"Selected option: {option_pick}")
