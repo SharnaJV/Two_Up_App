@@ -1,5 +1,6 @@
 from tkinter import *
 from Authentication import login, reg_user
+from Game_Features import *
 import mysql.connector
 
 #Defining login function
@@ -99,9 +100,6 @@ def reg_form():
     register_screen.geometry("300x200")
     Label(register_screen, text="Click Register to proceed", bg="#EFE0B9").pack()
     Button(register_screen, text="Register", width=10, height=1, bg="#B7521E", fg="#EFE0B9", command=registration).pack()
-    
-def font_options(option_pick):
-    print(f"Selected option: {option_pick}")
 
 #Creating the gameplay screen
 def game_screen():
@@ -109,6 +107,7 @@ def game_screen():
 #Switching from login screen to game screen
     global login_screen
     login_screen.destroy()
+    global two_up_screen
     two_up_screen = Tk()
 
 #Setup of game screen window is same as login window
@@ -118,13 +117,7 @@ def game_screen():
     two_up_screen.configure(bg="#EFE0B9")
 
 #Drop-down menu for changing font sizes
-    label_font = Label(two_up_screen, text="Font Size", bg="#EFE0B9")
-    label_font.pack()
-    font_size = ["Small", "Medium", "Large"]
-    menu_01 = StringVar(two_up_screen)
-    menu_01.set(font_size[0])
-    font_menu = OptionMenu(two_up_screen, menu_01, *font_size, command= lambda x: font_options(menu_01.get()))
-    font_menu.pack()
+    font_options(two_up_screen)
     
     two_up_screen.mainloop()
 
