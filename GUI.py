@@ -1,6 +1,7 @@
 from tkinter import *
 from Authentication import login, reg_user
 from Game_Features import *
+from Game import *
 import mysql.connector
 
 #Defining login function
@@ -10,7 +11,7 @@ def login_auth():
 
     if login(uname_input,pwd_input):
         print("Proceed to game_screen or other actions after successful login")
-        game_screen()
+        game_screen(login_screen)
         
 #Creating the user authentication screen
 def login_form():
@@ -101,12 +102,10 @@ def reg_form():
     Label(register_screen, text="Click Register to proceed", bg="#EFE0B9").pack()
     Button(register_screen, text="Register", width=10, height=1, bg="#B7521E", fg="#EFE0B9", command=registration).pack()
 
-#Creating the gameplay screen
-def game_screen():
-
+def game_screen(login_screen):
 #Switching from login screen to game screen
-    global login_screen
     login_screen.destroy()
+
     global two_up_screen
     two_up_screen = Tk()
 
@@ -117,7 +116,15 @@ def game_screen():
     two_up_screen.configure(bg="#EFE0B9")
 
 #Drop-down menu for changing font sizes
-    font_options(two_up_screen)
-    
-    two_up_screen.mainloop()
+    # font_options(two_up_screen)
 
+    def play_game():
+        result = play_two_up()
+        result_label.config(text=result) 
+
+    result_label = Label(two_up_screen, text="", bg="#EFE0B9", fg="#B7521E", font=("Arial", 16))
+    result_label.pack()
+
+    flip_button = Button(two_up_screen, text="Toss Coins", width=15, height=2, bg="#B7521E", fg="#EFE0B9", command=play_game)
+
+    two_up_screen.mainloop()
